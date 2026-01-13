@@ -1,0 +1,18 @@
+[project]
+name = "nullomers2"
+version = "0.1.0"
+description = "A python package to generate nullomers from FASTA files."
+authors = [
+    {name = "jmb28",email = "jmb28@aber.ac.uk"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "typer (==0.21.1)",
+    "jellyfish (==2.3.1)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
