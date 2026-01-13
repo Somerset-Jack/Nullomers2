@@ -60,7 +60,6 @@ def nullomers_to_file(filename, nullomers, path, length):
         make_cmd = ("mkdir " + path + '/' + str(length) +"_Nullomers")
         os.system(make_cmd)
     os.chdir(path + '/' + str(length) + "_Nullomers")
-
     fname = (filename.rsplit(".",1)[0] + "_nullomers.txt")
     f = open(fname, "w")
     for n in nullomers.keys():  # Iterates through the keys of the dictionary and writes them to a new line in the file
@@ -69,10 +68,4 @@ def nullomers_to_file(filename, nullomers, path, length):
 
 
 if __name__ == '__main__':
-    kmer_dict = jf_to_dict("/home/jmb28/PycharmProjects/Nullomer-Generator/Nullomer Creation and Comparison/Ct-1_read_kmers_noncan_10.fa")
-    all_kmer = generate_all_kmers(10)
-    nullomers = nullomer_generator(all_kmer, kmer_dict)
-    f = open("Ct-1_nullomers_from_reads_noncan.txt", "w")
-    for n in nullomers.keys():
-        f.write(n + '\n')
-    f.close()
+    jf_to_dict("/Nullomer Creation and Comparison/test_files/indexed_kmers/dumps.fa")

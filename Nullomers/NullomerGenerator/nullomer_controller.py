@@ -25,7 +25,8 @@ def generate_nullomers(
 ):
     print(f'Location of genomes: {path_to_genome}')
     print(f'Nullomer length chosen: {nullomer_length}')
-    file_finder(path_to_genome, nullomer_length)
+
+    file_finder(str(path_to_genome), nullomer_length)
 
 def file_finder(path, length):
     directory = path
