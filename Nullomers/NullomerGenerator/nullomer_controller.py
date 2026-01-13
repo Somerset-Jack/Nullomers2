@@ -3,7 +3,7 @@ import os
 import typer
 from typing import Annotated
 from pathlib import Path
-from Nullomers.NullomerGenerator import generate_nullomers
+from Nullomers.NullomerGenerator import generate_nullomers as gn
 from Nullomers.NullomerGenerator import index_kmers
 
 app = typer.Typer()
@@ -50,8 +50,7 @@ def file_finder(path, length):
 def controller(filename, path, length):
     # Calls the correct functions and send the correct the arguments.
     indexed_kmers = index_kmers.run_jellyfish(filename, path, length)
-    nullomers = generate_nullomers.nullomer_generation(length, indexed_kmers, filename, path)
-
+    nullomers = gn.nullomer_generation(length, indexed_kmers, filename, path)
 
 #if __name__ == '__main__':
 
