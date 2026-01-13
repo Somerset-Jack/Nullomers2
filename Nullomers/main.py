@@ -8,5 +8,3 @@ app.add_typer(nullomer_generator_app)
 
 if __name__ == '__main__':
     app()
-
-
