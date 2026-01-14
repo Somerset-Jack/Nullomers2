@@ -5,6 +5,7 @@ from typing import Annotated
 from pathlib import Path
 from Nullomers.NullomerGenerator import generate_nullomers as gn
 from Nullomers.NullomerGenerator import index_kmers
+from Nullomers.NullomerGenerator import pan_nullomer
 
 app = typer.Typer()
 
