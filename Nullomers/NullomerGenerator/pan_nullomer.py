@@ -24,7 +24,7 @@ def file_by_file(path):
 
 
 def all_nullomers_to_fasta(all_nullomers):
-    f = open("PanNullomers11.fa", "w")
+    f = open("distinct_nullomers", "w")
     for nullomer, v in all_nullomers.items():
         f.write(">" + str(v) + '\n')
         f.write(nullomer + '\n')

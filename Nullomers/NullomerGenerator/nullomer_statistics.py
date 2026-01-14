@@ -2,6 +2,7 @@ import typer
 from typing import Annotated, Literal
 from pathlib import Path
 from Nullomers.NullomerGenerator import pan_nullomer
+from Nullomers.NullomerGenerator import classify_nullomers
 
 app = typer.Typer()
 
@@ -24,17 +25,17 @@ def nullomer_stats(
     print("Location of nullomers: ", path_to_nullomers)
     print("Statistics chosen: ", stats)
     if stats == "classify":
-        classify_nullomers(path_to_nullomers)
+        nullomer_classification(path_to_nullomers)
     elif stats == "dinucleotide":
         dinucleotide_content(path_to_nullomers)
     elif stats == "all":
-        classify_nullomers(path_to_nullomers)
+        nullomer_classification(path_to_nullomers)
         dinucleotide_content(path_to_nullomers)
 
 
-def classify_nullomers(path_to_nullomers: Path):
+def nullomer_classification(path_to_nullomers: Path):
     distinct_nullomers = pan_nullomer.distinct_nullomers(path_to_nullomers)
-
+    classified_nullomers = classify_nullomers.classify_nullomers(path_to_nullomers, distinct_nullomers)
 
 def dinucleotide_content(path_to_nullomers: Path):
     do_something = 2
