@@ -13,7 +13,7 @@ def file_to_fasta(filepath):
     for file in os.listdir(filepath):
         if file.endswith(".txt"):
             genome_id = "_".join(file.split("_", 2)[:2])
-            infile = open(file)
+            infile = open(str(filepath) + "/" + file)
             seqs = []
             for line in infile:
                 seqs.append(line.strip())
