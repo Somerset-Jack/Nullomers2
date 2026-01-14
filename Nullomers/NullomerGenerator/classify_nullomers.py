@@ -1,8 +1,4 @@
 import os
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import subplots_adjust
-import pandas as pd
-import numpy as np
 
 
 def classify_nullomers(path_to_nullomers, distinct_nullomers):
@@ -12,7 +8,7 @@ def classify_nullomers(path_to_nullomers, distinct_nullomers):
         for file in files:
             if file.endswith(".txt"):
                 genome_id = (file.rsplit("_",3)[0])
-                print(genome_id)
+                #print(genome_id)
                 filepath = os.path.join(root, file)
                 nullomers = nullomers_to_dict(filepath)
                 all_nullomers.update({genome_id: nullomers})
@@ -65,11 +61,13 @@ def nullomers_to_dict(path):
     return nullomers
     #print(nullomer_dict)
 
-def distinct_nullomers_to_list(distinct_nullomers):
+
+def distinct_nullomers_to_list(nullomers_distinct):
     distinct_nullomers_list = []
-    for nullomer in distinct_nullomers.keys():
+    for nullomer in nullomers_distinct.keys():
         distinct_nullomers_list.append(nullomer)
     return distinct_nullomers_list
+
 
 def classes_to_fasta(classed):
     core_nullomers = classed.pop("Core Nullomers")

@@ -4,7 +4,7 @@ import os
 def distinct_nullomers(directory):
     unique_nullo = file_by_file(directory)
     all_nullomers_to_fasta(unique_nullo)
-
+    return unique_nullo
 
 def file_by_file(path):
     unique_nullomers = {}
