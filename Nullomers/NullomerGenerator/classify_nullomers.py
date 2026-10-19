@@ -1,20 +1,25 @@
 import os
+from pathlib import Path
 
-
-def classify_nullomers(path_to_nullomers, distinct_nullomers):
+def classify_nullomers(path_to_nullomers, distinct_nullomers, output_dir=None):
 
     all_nullomers = {}
+
     for root, dirs, files in os.walk(path_to_nullomers):
         for file in files:
             if file.endswith(".txt"):
-                genome_id = (file.rsplit("_",3)[0])
-                #print(genome_id)
+                genome_id = file.rsplit("_", 3)[0]
                 filepath = os.path.join(root, file)
                 nullomers = nullomers_to_dict(filepath)
                 all_nullomers.update({genome_id: nullomers})
+
     distinct = distinct_nullomers_to_list(distinct_nullomers)
     classified = compare_genome_nullomers(all_nullomers, distinct)
-    classes_to_fasta(classified)
+
+    if output_dir is not None:
+        classes_to_fasta(classified, output_dir)
+
+    return classified
 
 def compare_genome_nullomers(nullomers, distinct):
     classified_nullomers = {}
@@ -23,31 +28,42 @@ def compare_genome_nullomers(nullomers, distinct):
     shell_nullomers = []
     cloud_nullomers = []
 
+    genome_count = len(nullomers)
+
+    if genome_count == 0:
+        raise ValueError("No nullomer files were found to classify.")
+
     for nullomer in distinct:
         count = 0
+
         for genomes, list_nullomers in nullomers.items():
             if nullomer in list_nullomers:
                 count = count + 1
-        if count == 69:
+
+        proportion = count / genome_count
+
+        if count == genome_count:
             core_nullomers.append(nullomer)
-        if 62 < count < 69:
+        elif proportion >= 0.90:
             softcore_nullomers.append(nullomer)
-        if 7 < count < 63:
+        elif proportion >= 0.10:
             shell_nullomers.append(nullomer)
-        if count < 8:
+        else:
             cloud_nullomers.append(nullomer)
 
+    print("Genomes classified: " + str(genome_count))
     print("Core Nullomers: " + str(len(core_nullomers)))
     print("Softcore Nullomers: " + str(len(softcore_nullomers)))
-    print("Shell Nullomerrs: " + str(len(shell_nullomers)))
+    print("Shell Nullomers: " + str(len(shell_nullomers)))
     print("Cloud Nullomers: " + str(len(cloud_nullomers)))
 
-    classified_nullomers.update({"Core Nullomers":core_nullomers})
-    classified_nullomers.update({"Softcore Nullomers":softcore_nullomers})
-    classified_nullomers.update({"Shell Nullomers":shell_nullomers})
-    classified_nullomers.update({"Cloud Nullomers":cloud_nullomers})
+    classified_nullomers.update({"Core Nullomers": core_nullomers})
+    classified_nullomers.update({"Softcore Nullomers": softcore_nullomers})
+    classified_nullomers.update({"Shell Nullomers": shell_nullomers})
+    classified_nullomers.update({"Cloud Nullomers": cloud_nullomers})
 
     return classified_nullomers
+
 
 
 def nullomers_to_dict(path):
@@ -69,31 +85,35 @@ def distinct_nullomers_to_list(nullomers_distinct):
     return distinct_nullomers_list
 
 
-def classes_to_fasta(classed):
-    core_nullomers = classed.pop("Core Nullomers")
-    softcore_nullomers = classed.pop("Softcore Nullomers")
-    shell_nullomers = classed.pop("Shell Nullomers")
-    cloud_nullomers = classed.pop("Cloud Nullomers")
+def classes_to_fasta(classed, output_dir="."):
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
 
-    c = open("core_nullomers.fa", "w")
+    core_nullomers = classed["Core Nullomers"]
+    softcore_nullomers = classed["Softcore Nullomers"]
+    shell_nullomers = classed["Shell Nullomers"]
+    cloud_nullomers = classed["Cloud Nullomers"]
+
+    c = open(output_path / "core_nullomers.fa", "w")
     for nullomer in core_nullomers:
         c.write(">" + '\n')
         c.write(nullomer + '\n')
     c.close()
 
-    f = open("softcore_nullomers.fa", "w")
+    f = open(output_path / "softcore_nullomers.fa", "w")
     for nullomer in softcore_nullomers:
         f.write(">" + '\n')
         f.write(nullomer + '\n')
     f.close()
 
-    s = open("shell_nullomers.fa", "w")
+    s = open(output_path / "shell_nullomers.fa", "w")
     for nullomer in shell_nullomers:
         s.write(">" + '\n')
         s.write(nullomer + '\n')
     s.close()
 
-    l = open("cloud_nullomers.fa", "w")
+    l = open(output_path / "cloud_nullomers.fa", "w")
     for nullomer in cloud_nullomers:
         l.write(">" + '\n')
         l.write(nullomer + '\n')
+    l.close()
