@@ -8,7 +8,7 @@ def classify_nullomers(path_to_nullomers, distinct_nullomers, output_dir=None):
     for root, dirs, files in os.walk(path_to_nullomers):
         for file in files:
             if file.endswith(".txt"):
-                genome_id = file.rsplit("_", 3)[0]
+                genome_id = file.removesuffix("_nullomers.txt")
                 filepath = os.path.join(root, file)
                 nullomers = nullomers_to_dict(filepath)
                 all_nullomers.update({genome_id: nullomers})
